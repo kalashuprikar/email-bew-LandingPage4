@@ -131,6 +131,7 @@ export const FooterWithSocialBlockComponent: React.FC<
                 handleFieldChange("enterpriseName", "content", e.target.value)
               }
               onBlur={() => onElementSelect?.(null)}
+              onClick={(e) => e.stopPropagation()}
               autoFocus
               className="w-full border border-valasys-orange rounded px-2 py-1 text-center"
               style={{
@@ -170,6 +171,7 @@ export const FooterWithSocialBlockComponent: React.FC<
                 handleFieldChange("address", "content", e.target.value)
               }
               onBlur={() => onElementSelect?.(null)}
+              onClick={(e) => e.stopPropagation()}
               autoFocus
               className="w-full border border-valasys-orange rounded px-2 py-1 text-center"
               style={{
@@ -213,6 +215,7 @@ export const FooterWithSocialBlockComponent: React.FC<
                 handleFieldChange("subscriptionText", "content", e.target.value)
               }
               onBlur={() => onElementSelect?.(null)}
+              onClick={(e) => e.stopPropagation()}
               autoFocus
               className="w-full border border-valasys-orange rounded px-2 py-1 text-center"
               style={{
@@ -256,6 +259,7 @@ export const FooterWithSocialBlockComponent: React.FC<
                 onChange={(e) =>
                   handleFieldChange("unsubscribeLink", "text", e.target.value)
                 }
+                onClick={(e) => e.stopPropagation()}
                 placeholder="Link text"
                 className="w-full border border-valasys-orange rounded px-2 py-1 text-sm"
               />
@@ -265,6 +269,7 @@ export const FooterWithSocialBlockComponent: React.FC<
                 onChange={(e) =>
                   handleFieldChange("unsubscribeLink", "url", e.target.value)
                 }
+                onClick={(e) => e.stopPropagation()}
                 placeholder="https://"
                 className="w-full border border-valasys-orange rounded px-2 py-1 text-sm"
               />
