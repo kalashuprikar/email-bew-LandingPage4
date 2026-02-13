@@ -676,78 +676,78 @@ export const TwoColumnCardBlockComponent: React.FC<
                 </div>
 
                 {/* Button */}
-                <div className="flex flex-col gap-2">
-                  {card.button ? (
-                    <>
-                      <button
-                        style={{
-                          backgroundColor: card.button.backgroundColor,
-                          color: card.button.textColor,
-                          borderRadius: `${card.button.borderRadius}px`,
-                          padding: `${card.button.padding}px ${card.button.padding * 2}px`,
-                          border: "none",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontWeight: "500",
-                        }}
-                        onMouseEnter={() =>
-                          setHoveredFieldId(`button-${card.id}`)
-                        }
-                        onMouseLeave={() => setHoveredFieldId(null)}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setFocusedFieldId(`button-${card.id}`);
-                        }}
-                        onDoubleClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenButtonEditor(card.id);
-                        }}
-                        title="Double-click to edit button"
-                      >
-                        {card.button.text}
-                      </button>
-                      {focusedFieldId === `button-${card.id}` && (
-                        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm w-fit">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 px-2 text-xs hover:bg-gray-100"
-                            title="Edit button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOpenButtonEditor(card.id);
-                            }}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 w-7 p-0 hover:bg-red-100"
-                            title="Delete button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteButton(card.id);
-                              setFocusedFieldId(null);
-                            }}
-                          >
-                            <Trash2 className="w-3 h-3 text-red-600" />
-                          </Button>
-                        </div>
-                      )}
-                    </>
-                  ) : (
+                {card.button ? (
+                  <div className="flex flex-col gap-2 pt-2">
+                    <button
+                      style={{
+                        backgroundColor: card.button.backgroundColor,
+                        color: card.button.textColor,
+                        borderRadius: `${card.button.borderRadius}px`,
+                        padding: `${card.button.padding}px ${card.button.padding * 2}px`,
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                      }}
+                      onMouseEnter={() =>
+                        setHoveredFieldId(`button-${card.id}`)
+                      }
+                      onMouseLeave={() => setHoveredFieldId(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFocusedFieldId(`button-${card.id}`);
+                      }}
+                      onDoubleClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenButtonEditor(card.id);
+                      }}
+                      title="Double-click to edit button"
+                    >
+                      {card.button.text}
+                    </button>
+                    {focusedFieldId === `button-${card.id}` && (
+                      <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm w-fit">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-xs hover:bg-gray-100"
+                          title="Edit button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenButtonEditor(card.id);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 hover:bg-red-100"
+                          title="Delete button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteButton(card.id);
+                            setFocusedFieldId(null);
+                          }}
+                        >
+                          <Trash2 className="w-3 h-3 text-red-600" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  hoveredCardId === card.id && (
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full text-xs"
+                      className="w-full text-xs mt-2"
                       onClick={() => handleAddButton(card.id)}
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       Add Button
                     </Button>
-                  )}
-                </div>
+                  )
+                )}
               </div>
             </div>
           );
