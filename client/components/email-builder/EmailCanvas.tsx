@@ -46,7 +46,12 @@ export const EmailCanvas: React.FC<EmailCanvasProps> = ({
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ["block", "template"],
-    drop: (item: any) => {
+    drop: (item: any, monitor) => {
+      // Check if drop was handled by a nested drop zone
+      if (monitor.didDrop()) {
+        return; // A nested drop zone already handled it
+      }
+
       if (item.blocks) {
         // Template dropped - add all blocks at the end
         item.blocks.forEach((block: ContentBlock) => {
