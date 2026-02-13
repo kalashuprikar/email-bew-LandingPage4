@@ -75,28 +75,25 @@ export const FooterWithSocialBlockComponent: React.FC<
 
   const handleDeleteSection = (sectionType: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    // Confirm deletion
-    if (confirm("Are you sure you want to delete this section?")) {
-      // Reset the section with empty/default values
-      const fieldValue = block[sectionType as keyof typeof block];
-      const resetValue = { ...(fieldValue as any) };
+    // Reset the section with empty/default values
+    const fieldValue = block[sectionType as keyof typeof block];
+    const resetValue = { ...(fieldValue as any) };
 
-      // Clear all content-related fields based on section type
-      if (sectionType === "social") {
-        resetValue.platforms = [];
-      } else if (sectionType === "unsubscribeLink") {
-        resetValue.text = "";
-        resetValue.url = "";
-      } else {
-        // For other sections (enterpriseName, address, subscriptionText)
-        if ("content" in resetValue) {
-          resetValue.content = "";
-        }
+    // Clear all content-related fields based on section type
+    if (sectionType === "social") {
+      resetValue.platforms = [];
+    } else if (sectionType === "unsubscribeLink") {
+      resetValue.text = "";
+      resetValue.url = "";
+    } else {
+      // For other sections (enterpriseName, address, subscriptionText)
+      if ("content" in resetValue) {
+        resetValue.content = "";
       }
-
-      onContentChange(sectionType, resetValue);
-      setSelectedSection(null);
     }
+
+    onContentChange(sectionType, resetValue);
+    setSelectedSection(null);
   };
 
   return (
