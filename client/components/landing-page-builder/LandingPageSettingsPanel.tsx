@@ -337,11 +337,15 @@ export const LandingPageSettingsPanel: React.FC<
             value={parseInt(localProps.width) || 100}
             onChange={(e) => {
               const unit = (localProps.width || "100%").includes("%") ? "%" : "px";
-              let num = e.target.value;
-              // Max 100 for percentage
-              if (unit === "%" && parseInt(num) > 100) {
-                num = "100";
+              let num = parseInt(e.target.value) || 0;
+
+              // For percentage: enforce max 100
+              if (unit === "%") {
+                if (num > 100) {
+                  return; // Don't update if > 100 for %
+                }
               }
+
               updateProperty("width", `${num}${unit}`);
             }}
             max={(localProps.width || "100%").includes("%") ? 100 : undefined}
