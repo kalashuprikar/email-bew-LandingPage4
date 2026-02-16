@@ -11,11 +11,22 @@ interface LandingPageSettingsPanelProps {
   onBlockUpdate: (blockId: string, properties: Record<string, any>) => void;
   onBlockDelete?: () => void;
   blockId?: string;
+  selectedLinkIndex?: number | null;
+  selectedLinkType?: "navigation" | "quick" | null;
+  onLinkSelect?: (index: number | null, type: "navigation" | "quick" | null) => void;
 }
 
 export const LandingPageSettingsPanel: React.FC<
   LandingPageSettingsPanelProps
-> = ({ block, onBlockUpdate, onBlockDelete, blockId }) => {
+> = ({
+  block,
+  onBlockUpdate,
+  onBlockDelete,
+  blockId,
+  selectedLinkIndex,
+  selectedLinkType,
+  onLinkSelect
+}) => {
   const [localProps, setLocalProps] = useState(block?.properties || {});
 
   useEffect(() => {
@@ -23,6 +34,88 @@ export const LandingPageSettingsPanel: React.FC<
       setLocalProps(block.properties);
     }
   }, [block?.id]);
+
+  const updateProperty = (key: string, value: any) => {
+    const updated = { ...localProps, [key]: value };
+    setLocalProps(updated);
+    if (blockId) {
+      onBlockUpdate(blockId, updated);
+    }
+  };
+
+  // Show link editing UI if a link is selected
+  if (selectedLinkIndex !== null && selectedLinkType && block) {
+    const links = selectedLinkType === "navigation"
+      ? (localProps.navigationLinks || [])
+      : (localProps.quickLinks || []);
+
+    const link = links[selectedLinkIndex];
+
+    if (link) {
+      return (
+        <div className="bg-white border-l border-gray-200 h-full overflow-y-auto flex flex-col">
+          <div className="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
+            <button
+              onClick={() => onLinkSelect?.(null, null)}
+              className="text-sm text-gray-600 hover:text-gray-900 mb-2"
+            >
+              ← Back to block
+            </button>
+            <h3 className="font-semibold text-gray-900">Edit Link</h3>
+          </div>
+
+          <div className="flex-1 p-4">
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium">Link Text</Label>
+                <Input
+                  value={link.label}
+                  onChange={(e) => {
+                    const updated = [...links];
+                    updated[selectedLinkIndex] = { ...link, label: e.target.value };
+                    const key = selectedLinkType === "navigation" ? "navigationLinks" : "quickLinks";
+                    updateProperty(key, updated);
+                  }}
+                  placeholder="Link text"
+                />
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium">URL</Label>
+                <Input
+                  value={link.href}
+                  onChange={(e) => {
+                    const updated = [...links];
+                    updated[selectedLinkIndex] = { ...link, href: e.target.value };
+                    const key = selectedLinkType === "navigation" ? "navigationLinks" : "quickLinks";
+                    updateProperty(key, updated);
+                  }}
+                  placeholder="URL"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+            <Button
+              variant="destructive"
+              size="sm"
+              className="w-full"
+              onClick={() => {
+                const updated = links.filter((_: any, i: number) => i !== selectedLinkIndex);
+                const key = selectedLinkType === "navigation" ? "navigationLinks" : "quickLinks";
+                updateProperty(key, updated);
+                onLinkSelect?.(null, null);
+              }}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete Link
+            </Button>
+          </div>
+        </div>
+      );
+    }
+  }
 
   if (!block) {
     return (
@@ -33,14 +126,6 @@ export const LandingPageSettingsPanel: React.FC<
       </div>
     );
   }
-
-  const updateProperty = (key: string, value: any) => {
-    const updated = { ...localProps, [key]: value };
-    setLocalProps(updated);
-    if (blockId) {
-      onBlockUpdate(blockId, updated);
-    }
-  };
 
   const updateNestedProperty = (
     parentKey: string,

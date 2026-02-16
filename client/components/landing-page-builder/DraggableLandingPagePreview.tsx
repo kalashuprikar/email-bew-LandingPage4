@@ -49,6 +49,7 @@ interface DraggableLandingPagePreviewProps {
   onDuplicateBlock?: (blockId: string) => void;
   onReorderBlocks: (blocks: LandingPageBlock[]) => void;
   onAddBlock?: (blockIndex: number, block: LandingPageBlock) => void;
+  onLinkSelect?: (blockId: string, linkIndex: number, linkType: "navigation" | "quick") => void;
 }
 
 const BLOCK_CREATORS = {
@@ -75,6 +76,7 @@ const DragItem: React.FC<{
   onDelete: () => void;
   onDuplicate?: () => void;
   onAddBlock?: (blockIndex: number, block: LandingPageBlock) => void;
+  onLinkSelect?: (linkIndex: number, linkType: "navigation" | "quick") => void;
   moveBlock: (dragIndex: number, hoverIndex: number) => void;
 }> = ({
   block,
@@ -85,6 +87,7 @@ const DragItem: React.FC<{
   onDelete,
   onDuplicate,
   onAddBlock,
+  onLinkSelect,
   moveBlock,
 }) => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -129,6 +132,7 @@ const DragItem: React.FC<{
     isSelected,
     onSelect,
     onUpdate,
+    onLinkSelect,
   };
 
   let blockContent;
@@ -356,6 +360,7 @@ export const DraggableLandingPagePreview: React.FC<
         onDelete={() => onDeleteBlock(block.id)}
         onDuplicate={() => onDuplicateBlock?.(block.id)}
         onAddBlock={onAddBlock ? handleAddBlockAtIndex : undefined}
+        onLinkSelect={onLinkSelect ? (linkIndex, linkType) => onLinkSelect(block.id, linkIndex, linkType) : undefined}
         moveBlock={moveBlock}
       />
     );

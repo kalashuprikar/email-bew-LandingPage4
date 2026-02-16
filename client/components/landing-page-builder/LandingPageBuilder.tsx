@@ -32,6 +32,8 @@ export const LandingPageBuilder: React.FC<LandingPageBuilderProps> = ({
   const [page, setPage] = useState<LandingPage | null>(null);
   const [pageName, setPageName] = useState("");
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
+  const [selectedLinkIndex, setSelectedLinkIndex] = useState<number | null>(null);
+  const [selectedLinkType, setSelectedLinkType] = useState<"navigation" | "quick" | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isSectionsPanelOpen, setIsSectionsPanelOpen] = useState(false);
 
@@ -271,6 +273,11 @@ export const LandingPageBuilder: React.FC<LandingPageBuilderProps> = ({
               onDuplicateBlock={handleDuplicateBlock}
               onReorderBlocks={handleReorderBlocks}
               onAddBlock={handleAddBlockAtIndex}
+              onLinkSelect={(blockId, linkIndex, linkType) => {
+                setSelectedBlockId(blockId);
+                setSelectedLinkIndex(linkIndex);
+                setSelectedLinkType(linkType);
+              }}
             />
           </div>
         </div>
@@ -285,6 +292,12 @@ export const LandingPageBuilder: React.FC<LandingPageBuilderProps> = ({
           onBlockDelete={
             selectedBlockId ? () => handleDeleteBlock(selectedBlockId) : undefined
           }
+          selectedLinkIndex={selectedLinkIndex}
+          selectedLinkType={selectedLinkType}
+          onLinkSelect={(index, type) => {
+            setSelectedLinkIndex(index);
+            setSelectedLinkType(type);
+          }}
         />
       </div>
     </div>

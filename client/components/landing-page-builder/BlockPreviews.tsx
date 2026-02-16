@@ -7,6 +7,7 @@ interface BlockPreviewProps {
   isSelected: boolean;
   onSelect: () => void;
   onUpdate: (props: Record<string, any>) => void;
+  onLinkSelect?: (linkIndex: number, linkType: "navigation" | "quick") => void;
 }
 
 export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
@@ -14,6 +15,7 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
   isSelected,
   onSelect,
   onUpdate,
+  onLinkSelect,
 }) => {
   const props = block.properties;
 
@@ -43,8 +45,11 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
           {props.navigationLinks?.map((link: any, i: number) => (
             <div
               key={i}
-              onClick={(e) => e.stopPropagation()}
-              className="hover:text-gray-900"
+              onClick={(e) => {
+                e.stopPropagation();
+                onLinkSelect?.(i, "navigation");
+              }}
+              className="hover:text-gray-900 cursor-pointer hover:opacity-70"
             >
               <EditableLink
                 label={link.label}
@@ -292,6 +297,7 @@ export const FooterBlockPreview: React.FC<BlockPreviewProps> = ({
   isSelected,
   onSelect,
   onUpdate,
+  onLinkSelect,
 }) => {
   const props = block.properties;
 
@@ -331,8 +337,11 @@ export const FooterBlockPreview: React.FC<BlockPreviewProps> = ({
               {props.quickLinks?.map((link: any, i: number) => (
                 <div
                   key={i}
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-sm opacity-75 hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLinkSelect?.(i, "quick");
+                  }}
+                  className="text-sm opacity-75 hover:opacity-100 cursor-pointer hover:opacity-70"
                 >
                   <EditableLink
                     label={link.label}
