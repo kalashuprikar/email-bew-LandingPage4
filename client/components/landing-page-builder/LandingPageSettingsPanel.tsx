@@ -3,7 +3,7 @@ import { LandingPageBlock } from "./types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Copy } from "lucide-react";
 import { EditableLink } from "./EditableLink";
 
 interface LandingPageSettingsPanelProps {
@@ -181,22 +181,52 @@ export const LandingPageSettingsPanel: React.FC<
         <div className="space-y-2">
           {localProps.navigationLinks?.map(
             (link: any, index: number) => (
-              <EditableLink
-                key={index}
-                label={link.label}
-                href={link.href}
-                onUpdate={(label, href) => {
-                  const updated = [...(localProps.navigationLinks || [])];
-                  updated[index] = { label, href };
-                  updateProperty("navigationLinks", updated);
-                }}
-                onDelete={() => {
-                  const updated = (localProps.navigationLinks || []).filter(
-                    (_: any, i: number) => i !== index,
-                  );
-                  updateProperty("navigationLinks", updated);
-                }}
-              />
+              <div key={index} className="flex items-center gap-2">
+                <div className="flex-1">
+                  <EditableLink
+                    label={link.label}
+                    href={link.href}
+                    onUpdate={(label, href) => {
+                      const updated = [...(localProps.navigationLinks || [])];
+                      updated[index] = { label, href };
+                      updateProperty("navigationLinks", updated);
+                    }}
+                    onDelete={() => {
+                      const updated = (localProps.navigationLinks || []).filter(
+                        (_: any, i: number) => i !== index,
+                      );
+                      updateProperty("navigationLinks", updated);
+                    }}
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8 w-8 p-0 hover:bg-gray-100"
+                  title="Copy link"
+                  onClick={() => {
+                    const updated = [...(localProps.navigationLinks || [])];
+                    updated.splice(index + 1, 0, { ...link });
+                    updateProperty("navigationLinks", updated);
+                  }}
+                >
+                  <Copy className="w-4 h-4 text-gray-600" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
+                  title="Delete link"
+                  onClick={() => {
+                    const updated = (localProps.navigationLinks || []).filter(
+                      (_: any, i: number) => i !== index,
+                    );
+                    updateProperty("navigationLinks", updated);
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
             ),
           )}
         </div>
@@ -447,22 +477,52 @@ export const LandingPageSettingsPanel: React.FC<
         <Label className="text-sm font-medium mb-2 block">Quick Links</Label>
         <div className="space-y-2">
           {localProps.quickLinks?.map((link: any, index: number) => (
-            <EditableLink
-              key={index}
-              label={link.label}
-              href={link.href}
-              onUpdate={(label, href) => {
-                const updated = [...(localProps.quickLinks || [])];
-                updated[index] = { label, href };
-                updateProperty("quickLinks", updated);
-              }}
-              onDelete={() => {
-                const updated = (localProps.quickLinks || []).filter(
-                  (_: any, i: number) => i !== index,
-                );
-                updateProperty("quickLinks", updated);
-              }}
-            />
+            <div key={index} className="flex items-center gap-2">
+              <div className="flex-1">
+                <EditableLink
+                  label={link.label}
+                  href={link.href}
+                  onUpdate={(label, href) => {
+                    const updated = [...(localProps.quickLinks || [])];
+                    updated[index] = { label, href };
+                    updateProperty("quickLinks", updated);
+                  }}
+                  onDelete={() => {
+                    const updated = (localProps.quickLinks || []).filter(
+                      (_: any, i: number) => i !== index,
+                    );
+                    updateProperty("quickLinks", updated);
+                  }}
+                />
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 hover:bg-gray-100"
+                title="Copy link"
+                onClick={() => {
+                  const updated = [...(localProps.quickLinks || [])];
+                  updated.splice(index + 1, 0, { ...link });
+                  updateProperty("quickLinks", updated);
+                }}
+              >
+                <Copy className="w-4 h-4 text-gray-600" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
+                title="Delete link"
+                onClick={() => {
+                  const updated = (localProps.quickLinks || []).filter(
+                    (_: any, i: number) => i !== index,
+                  );
+                  updateProperty("quickLinks", updated);
+                }}
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
           ))}
         </div>
         <Button
