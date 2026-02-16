@@ -19,19 +19,6 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
 }) => {
   const props = block.properties;
 
-  const handleLinkUpdate = (index: number, label: string, href: string) => {
-    const updated = [...(props.navigationLinks || [])];
-    updated[index] = { label, href };
-    onUpdate({ ...props, navigationLinks: updated });
-  };
-
-  const handleLinkDelete = (index: number) => {
-    const updated = (props.navigationLinks || []).filter(
-      (_: any, i: number) => i !== index,
-    );
-    onUpdate({ ...props, navigationLinks: updated });
-  };
-
   return (
     <div
       onClick={onSelect}
@@ -54,8 +41,6 @@ export const HeaderBlockPreview: React.FC<BlockPreviewProps> = ({
               <EditableLink
                 label={link.label}
                 href={link.href}
-                onUpdate={(label, href) => handleLinkUpdate(i, label, href)}
-                onDelete={() => handleLinkDelete(i)}
                 inline={true}
               />
             </div>
@@ -301,19 +286,6 @@ export const FooterBlockPreview: React.FC<BlockPreviewProps> = ({
 }) => {
   const props = block.properties;
 
-  const handleQuickLinkUpdate = (index: number, label: string, href: string) => {
-    const updated = [...(props.quickLinks || [])];
-    updated[index] = { label, href };
-    onUpdate({ ...props, quickLinks: updated });
-  };
-
-  const handleQuickLinkDelete = (index: number) => {
-    const updated = (props.quickLinks || []).filter(
-      (_: any, i: number) => i !== index,
-    );
-    onUpdate({ ...props, quickLinks: updated });
-  };
-
   return (
     <div
       onClick={onSelect}
@@ -346,10 +318,6 @@ export const FooterBlockPreview: React.FC<BlockPreviewProps> = ({
                   <EditableLink
                     label={link.label}
                     href={link.href}
-                    onUpdate={(label, href) =>
-                      handleQuickLinkUpdate(i, label, href)
-                    }
-                    onDelete={() => handleQuickLinkDelete(i)}
                     inline={true}
                   />
                 </div>
