@@ -336,10 +336,15 @@ export const LandingPageSettingsPanel: React.FC<
             type="number"
             value={parseInt(localProps.width) || 100}
             onChange={(e) => {
-              const num = e.target.value;
               const unit = (localProps.width || "100%").includes("%") ? "%" : "px";
+              let num = e.target.value;
+              // Max 100 for percentage
+              if (unit === "%" && parseInt(num) > 100) {
+                num = "100";
+              }
               updateProperty("width", `${num}${unit}`);
             }}
+            max={(localProps.width || "100%").includes("%") ? 100 : undefined}
             placeholder="100"
             className="flex-1"
           />
@@ -347,7 +352,13 @@ export const LandingPageSettingsPanel: React.FC<
             value={(localProps.width || "100%").includes("%") ? "%" : "px"}
             onChange={(e) => {
               const num = parseInt(localProps.width) || 100;
-              updateProperty("width", `${num}${e.target.value}`);
+              const unit = e.target.value;
+              // Reset to max 100 if switching from px to %
+              if (unit === "%") {
+                updateProperty("width", `${Math.min(num, 100)}${unit}`);
+              } else {
+                updateProperty("width", `${num}${unit}`);
+              }
             }}
             className="px-3 py-2 border border-input rounded-md bg-background text-sm"
           >
