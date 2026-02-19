@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { LandingPageBlock } from "./types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Trash2, Copy } from "lucide-react";
+import { Trash2, Copy, Upload } from "lucide-react";
 import { EditableLink } from "./EditableLink";
 
 interface LandingPageSettingsPanelProps {
@@ -50,6 +50,33 @@ export const LandingPageSettingsPanel: React.FC<
       setButtonHeightUnit(String(block.properties?.ctaButtonHeight || "auto").includes("%") ? "%" : "px");
     }
   }, [block?.id]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const contentImageInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        updateProperty("backgroundImage", dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleContentImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        updateProperty("imageUrl", dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const updateProperty = (key: string, value: any) => {
     const updated = { ...localProps, [key]: value };
@@ -1038,16 +1065,35 @@ export const LandingPageSettingsPanel: React.FC<
       </div>
 
       <div>
-        <Label className="text-sm font-medium">Background Image URL</Label>
-        <Input
-          value={localProps.backgroundImage || ""}
-          onChange={(e) => updateProperty("backgroundImage", e.target.value)}
-          placeholder="https://example.com/image.jpg"
-        />
+        <Label className="text-sm font-medium">Background Image</Label>
+        <div className="flex gap-2 mb-2">
+          <Input
+            value={localProps.backgroundImage || ""}
+            onChange={(e) => updateProperty("backgroundImage", e.target.value)}
+            placeholder="https://example.com/image.jpg"
+            className="flex-1"
+          />
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap gap-1"
+          >
+            <Upload className="w-4 h-4" />
+            Upload
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+        </div>
         {localProps.backgroundImage && (
           <div className="mt-2 text-xs text-gray-600">
             <div
-              className="w-full h-20 rounded border border-gray-300 bg-cover bg-center mt-1"
+              className="w-full h-20 rounded border border-gray-300 bg-cover bg-center"
               style={{ backgroundImage: `url(${localProps.backgroundImage})` }}
             />
           </div>
@@ -1781,6 +1827,140 @@ export const LandingPageSettingsPanel: React.FC<
     </div>
   );
 
+  const renderContentImageBlockSettings = () => (
+    <div className="space-y-4">
+      <div>
+        <Label className="text-sm font-medium">Title</Label>
+        <Input
+          value={localProps.title || ""}
+          onChange={(e) => updateProperty("title", e.target.value)}
+          placeholder="Enter title"
+        />
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Description</Label>
+        <textarea
+          value={localProps.description || ""}
+          onChange={(e) => updateProperty("description", e.target.value)}
+          placeholder="Enter description"
+          className="w-full p-2 border border-gray-300 rounded text-sm font-mono"
+          rows={5}
+        />
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Image URL</Label>
+        <div className="flex gap-2 mb-2">
+          <Input
+            value={localProps.imageUrl || ""}
+            onChange={(e) => updateProperty("imageUrl", e.target.value)}
+            placeholder="https://example.com/image.jpg"
+            className="flex-1"
+          />
+          <Button
+            onClick={() => contentImageInputRef.current?.click()}
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap gap-1"
+          >
+            <Upload className="w-4 h-4" />
+            Upload
+          </Button>
+          <input
+            ref={contentImageInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleContentImageUpload}
+            className="hidden"
+          />
+        </div>
+        {localProps.imageUrl && (
+          <div className="mt-2 text-xs text-gray-600">
+            <img
+              src={localProps.imageUrl}
+              alt="Preview"
+              className="w-full h-32 object-cover rounded border border-gray-300"
+            />
+          </div>
+        )}
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Image Position</Label>
+        <div className="flex gap-2">
+          {["left", "right"].map((position) => (
+            <button
+              key={position}
+              onClick={() => updateProperty("imagePosition", position)}
+              className={`flex-1 py-2 px-3 rounded border text-xs font-medium transition-colors ${
+                localProps.imagePosition === position
+                  ? "bg-valasys-orange text-white border-valasys-orange"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              {position.charAt(0).toUpperCase() + position.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Button Text</Label>
+        <Input
+          value={localProps.buttonText || ""}
+          onChange={(e) => updateProperty("buttonText", e.target.value)}
+          placeholder="Button text"
+        />
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Button Link</Label>
+        <Input
+          value={localProps.buttonLink || ""}
+          onChange={(e) => updateProperty("buttonLink", e.target.value)}
+          placeholder="Button URL"
+        />
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Button Color</Label>
+        <div className="flex gap-2">
+          <Input
+            type="color"
+            value={localProps.buttonColor || "#FF6A00"}
+            onChange={(e) => updateProperty("buttonColor", e.target.value)}
+            className="w-12 h-10 p-1 cursor-pointer"
+          />
+          <Input
+            value={localProps.buttonColor || "#FF6A00"}
+            onChange={(e) => updateProperty("buttonColor", e.target.value)}
+            placeholder="#FF6A00"
+            className="flex-1"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Background Color</Label>
+        <div className="flex gap-2">
+          <Input
+            type="color"
+            value={localProps.backgroundColor || "#ffffff"}
+            onChange={(e) => updateProperty("backgroundColor", e.target.value)}
+            className="w-12 h-10 p-1 cursor-pointer"
+          />
+          <Input
+            value={localProps.backgroundColor || "#ffffff"}
+            onChange={(e) => updateProperty("backgroundColor", e.target.value)}
+            placeholder="#ffffff"
+            className="flex-1"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
   const renderBlockSettings = () => {
     switch (block.type) {
       case "header":
@@ -1803,6 +1983,8 @@ export const LandingPageSettingsPanel: React.FC<
         return renderProductBlockSettings();
       case "navigation":
         return renderNavigationBlockSettings();
+      case "content-image":
+        return renderContentImageBlockSettings();
       default:
         return renderDefaultSettings();
     }
