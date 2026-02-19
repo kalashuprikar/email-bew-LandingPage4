@@ -364,24 +364,6 @@ export const createQuoteBlock = (): LandingPageBlock => ({
   },
 });
 
-export const createTextHeadingsBlock = (): LandingPageBlock => ({
-  id: `text-headings-${Date.now()}`,
-  type: "text-headings",
-  properties: {
-    backgroundColor: "#ffffff",
-    padding: "40px",
-    margin: "0px",
-    borderRadius: "0px",
-    boxShadow: "none",
-  },
-  children: [
-    createHeadingBlock("h1"),
-    createParagraphBlock(),
-    createRichTextBlock(),
-    createQuoteBlock(),
-  ],
-});
-
 // Template block creators that return arrays of blocks
 export const createMeetFramerTemplate = (): LandingPageBlock[] => [
   createHeroBlock(),
