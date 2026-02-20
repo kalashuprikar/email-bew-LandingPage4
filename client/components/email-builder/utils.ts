@@ -1457,8 +1457,8 @@ export function renderTemplateToHTML(template: EmailTemplate): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${template.subject}</title>
 </head>
-<body style="background-color: ${template.backgroundColor}; padding: ${template.padding}px; font-family: Arial, sans-serif; margin: 0; padding: 0;">
-  <div style="max-width: 600px; margin: 0 auto;">
+<body style="background-color: #f5f5f5; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: ${template.backgroundColor}; border: 1px solid #ddd; border-radius: 4px; padding: ${template.padding}px;">
     ${bodyContent}
   </div>
 </body>
