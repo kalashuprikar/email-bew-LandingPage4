@@ -677,6 +677,14 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   }
 
   const renderSettings = () => {
+    if (!block) {
+      return (
+        <div className="flex items-center justify-center h-32 text-gray-400">
+          <p className="text-sm text-center">Select an element to edit styles</p>
+        </div>
+      );
+    }
+
     switch (block.type) {
       case "title":
         return (
