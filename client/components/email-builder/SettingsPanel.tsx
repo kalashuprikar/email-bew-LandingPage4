@@ -4,15 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Trash2, X, Copy, Plus } from "lucide-react";
+import { Trash2, X, Copy, Plus, ChevronLeft } from "lucide-react";
 import { SocialLinksEditor } from "./SocialLinksEditor";
 import { FooterSocialLinksEditor } from "./FooterSocialLinksEditor";
 import { generateId } from "./utils";
+import { SpacingSettings } from "./SpacingSettings";
 
 interface SettingsPanelProps {
   block: ContentBlock | null;
   onBlockUpdate: (block: ContentBlock) => void;
   onBlockDelete: () => void;
+  selectedSubElementId?: string | null;
+  onSubElementSelect?: (id: string | null) => void;
   selectedFooterElement?: string | null;
   onFooterElementSelect?: (element: string | null) => void;
 }
@@ -21,6 +24,8 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   block,
   onBlockUpdate,
   onBlockDelete,
+  selectedSubElementId,
+  onSubElementSelect,
   selectedFooterElement,
   onFooterElementSelect,
 }) => {
