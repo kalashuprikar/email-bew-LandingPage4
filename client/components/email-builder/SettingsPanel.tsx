@@ -6893,28 +6893,6 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </Button>
       </div>
       <div className="space-y-5">
-        <div className="bg-orange-50 p-3 rounded-lg border border-orange-100 mb-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-orange-700 uppercase tracking-wider">
-              {selectedSubElement ? "Editing Element" : "Editing Section"}
-            </span>
-            {selectedSubElement && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 text-[10px] text-orange-600 hover:text-orange-800 p-0"
-                onClick={() => onSubElementSelect?.(null)}
-              >
-                Reset to Section
-              </Button>
-            )}
-          </div>
-          <p className="text-[11px] text-orange-600 mt-1">
-            {selectedSubElement
-              ? `Now adjusting styling for the selected component.`
-              : "Adjusting styling for the entire card/section."}
-          </p>
-        </div>
         {renderSettings()}
         <UniversalStyleSettings
           block={selectedSubElement ? { ...selectedSubElement, ...(selectedSubElement.styles || {}) } : block}
