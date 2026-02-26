@@ -273,12 +273,13 @@ ${htmlContent.substring(htmlContent.indexOf('<div style="max-width:'), htmlConte
   }, []);
 
   return (
-    <DashboardLayout>
-      <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-col h-[calc(100vh-120px)] bg-gray-50">
-          {/* Top Header */}
-          <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-40">
-            <div className="flex items-center gap-4 flex-1">
+    <div className="email-builder-page" style={{ overflow: "visible", width: "100%" }}>
+      <DashboardLayout>
+        <DndProvider backend={HTML5Backend}>
+          <div className="flex flex-col h-[calc(100vh-120px)] bg-gray-50">
+            {/* Top Header */}
+            <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-40">
+              <div className="flex items-center gap-4 flex-1">
               {onBack && (
                 <Button
                   variant="outline"
@@ -563,5 +564,6 @@ ${htmlContent.substring(htmlContent.indexOf('<div style="max-width:'), htmlConte
         </Dialog>
       </DndProvider>
     </DashboardLayout>
+    </div>
   );
 };
